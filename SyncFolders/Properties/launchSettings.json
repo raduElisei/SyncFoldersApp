@@ -1,12 +1,13 @@
-﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
+{
   "profiles": {
     "SyncFolders": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
+      "commandLineArgs": "C:\\Users\\David\\Desktop\\tot\\dagami\\brainycrafts\\movies C:\\Users\\David\\Desktop\\tot\\dagami\\brainycrafts\\movies 10 C:\\Users\\David\\Desktop\\tot\\dagami\\brainycrafts\\movies",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": true
     }
-  }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json"
 }
