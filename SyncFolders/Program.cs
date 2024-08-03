@@ -6,28 +6,18 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = Host.CreateApplicationBuilder(args);
-
-        builder.Logging.ClearProviders();
-
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(builder.Configuration)
-            .CreateLogger();
-
-        builder.Logging.AddSerilog();
-
         // Check if all args are given:
         // input path, folder path, sync interval, log path
-        if (args.Length <= 2)
+        if (args.Length < 4)
         {
-            Log.Error("Not enough arguments. Please provide input folder path, output folder path, synchronization interval and log file path, in that order.");
+            Console.WriteLine("Not enough arguments. Please provide input folder path, output folder path, synchronization interval and log file path, in that order.");
             return;
         }
 
         int interval;
         if (!int.TryParse(args[2], out interval))
         {
-            Log.Error("Please enter a numeric argument for interval in minutes.");
+            Console.WriteLine("Please enter a numeric argument for interval in minutes.");
             return;
         }
 
@@ -37,19 +27,19 @@ public class Program
 
         if (!sourceDirectory.Exists)
         {
-            Log.Error($"Input directory not found: {sourceDirectory.FullName}");
+            Console.WriteLine($"Source directory not found: {sourceDirectory.FullName}");
             return;
         }
 
         if (!replicaDirectory.Exists)
         {
-            Log.Error($"Input directory not found: {replicaDirectory.FullName}");
+            Console.WriteLine($"Replica directory not found: {replicaDirectory.FullName}");
             return;
         }
 
         if( !logDirectory.Exists)
         {
-            Log.Error($"Input directory not found: {logDirectory.FullName}");
+            Console.WriteLine($"Log directory not found: {logDirectory.FullName}");
             return;
         }
 
@@ -61,8 +51,21 @@ public class Program
             LogPath = args[3]
         };
 
+        var builder = Host.CreateApplicationBuilder(args);
+        builder.Logging.ClearProviders();
+
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(builder.Configuration)
+            .WriteTo.File(arguments.LogPath, rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+        builder.Logging.AddSerilog();
+
         builder.Services.AddSingleton(arguments);
-        builder.Services.AddHostedService<Worker>();
+        builder.Services.AddHostedService(sp =>
+        {
+            return new Worker(arguments);
+        });
 
         var host = builder.Build();
         host.Run();

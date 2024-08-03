@@ -2,7 +2,7 @@
   "profiles": {
     "SyncFolders": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\David\\Desktop\\tot\\dagami\\brainycrafts\\movies C:\\Users\\David\\Desktop\\tot\\dagami\\brainycrafts\\movies 10 C:\\Users\\David\\Desktop\\tot\\dagami\\brainycrafts\\movies",
+      "commandLineArgs": "C:\\Users\\David\\Desktop\\input C:\\Users\\David\\Desktop\\output 10 C:\\Users\\David\\Desktop",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       },
